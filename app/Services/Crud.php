@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Guzzle\Http\Message\Response;
-use App\Models\Entity;
 
 trait Crud
 {
@@ -21,18 +20,18 @@ trait Crud
         return $request->send();
     }
 
-    public function create(Entity $entity): Response
+    public function create(string $body): Response
     {
         $request = $this->httpClient->post($this->resource);
-        $request->setBody($entity->toJson());
+        $request->setBody($body);
 
         return $request->send();
     }
 
-    public function update(int $id, Entity $entity): Response
+    public function update(int $id, string $body): Response
     {
         $request = $this->httpClient->put("{$this->resource}/{$id}");
-        $request->setBody($entity->toJson());
+        $request->setBody($body);
 
         return $request->send();
     }

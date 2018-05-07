@@ -13,6 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::resource('providers', 'ProviderController');
+Route::apiResource('providers', 'ProviderController');
 
 Route::get('test', 'ApiTestController@index');
