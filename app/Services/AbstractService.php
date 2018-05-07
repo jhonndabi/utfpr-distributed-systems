@@ -3,9 +3,12 @@
 namespace App\Services;
 
 use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\RequestOptions;
 
-abstract class AbstractService implements ServiceInterface
+abstract class AbstractService
 {
+    use Crud;
+
     /**
      * @see http://docs.guzzlephp.org/en/stable/
      * @var \GuzzleHttp\Client
@@ -13,28 +16,37 @@ abstract class AbstractService implements ServiceInterface
     protected $httpClient;
 
     /**
-     * @var string
-     */
-    protected $apiEndpoint;
-
-    /**
      * The default value to wait until timeout in seconds
      * @var int
      */
     protected $defaultTimeout = 60;
 
-    public function __construct(HttpClient $httpClient)
-    {
-        $this->httpClient = $httpClient;
-    }
+    /**
+     * The default resource url
+     * @var string
+     */
+    protected $resource;
 
-    protected function get($resource, array $options = [])
-    {
-        return $this->httpClient->request('GET', "{$this->apiEndpoint}/{$resource}", $options);
-    }
+    /**
+     * The default url to request
+     * @var string
+     */
+    protected $defaultHeaders = [
+        'Content-Type' => 'application/json',
+        'Accept'       => 'application/json',
+    ];
 
-    public function post($resource, array $options = [])
+    public function __construct(string $resource)
     {
-        return $this->httpClient->request('POST', "{$this->apiEndpoint}/{$resource}", $options);
+        // use IoC
+        $this->httpClient = new HttpClient([
+            'base_uri' => env('API_ENDPOINT', false),
+            'defaults' => [
+                'headers' => $this->defaultHeaders,
+                RequestOptions::TIMEOUT => $this->defaultTimeout
+            ]
+        ]);
+
+        $this->resource = $resource;
     }
 }
