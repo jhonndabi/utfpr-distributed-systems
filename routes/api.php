@@ -14,5 +14,4 @@ use Illuminate\Http\Request;
 */
 
 Route::apiResource('providers', 'ProviderController');
-
-Route::get('test', 'ApiTestController@index');
+// Route::apiResource('orders', 'OrderController');
