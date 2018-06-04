@@ -45,11 +45,12 @@ abstract class AbstractService
         $this->resource = $resource;
     }
 
-    public function find($id): Response
+    public function find($id)
     {
-        $request = $this->httpClient->get($this->databaseApiUrl("/{$this->resource}/{$id}"));
+        $options = $this->defaultOptions();
+        $response = $this->httpClient->get($this->databaseApiUrl("/{$this->resource}/{$id}"), $options);
 
-        return $request->send();
+        return $this->parseResponseToJson($response);
     }
 
     public function findAll()
@@ -60,28 +61,32 @@ abstract class AbstractService
         return $this->parseResponseToJson($response);
     }
 
-    public function create(string $body)
+    public function create(array $entity)
     {
-        $response = $this->httpClient->post($this->databaseApiUrl("/{$this->resource}"), [
-            'body' => json_encode($body)
-        ]);
+        $body = [RequestOptions::JSON => $entity];
+        $options = $this->defaultOptions();
+        $options = array_merge_recursive($options, $body);
 
+        $response = $this->httpClient->post($this->databaseApiUrl("/{$this->resource}"), $options);
         return $this->parseResponseToJson($response);
     }
 
-    public function update(int $id, string $body): Response
+    public function update(int $id, array $entity)
     {
-        $request = $this->httpClient->put(self::DATABASE_API_VERSION  . "/{$this->resource}/{$id}");
-        $request->setBody($body);
+        $body = [RequestOptions::JSON => $entity];
+        $options = $this->defaultOptions();
+        $options = array_merge_recursive($options, $body);
 
-        return $request->send();
+        $response = $this->httpClient->put($this->databaseApiUrl("/{$this->resource}/{$id}"), $options);
+        return $this->parseResponseToJson($response);
     }
 
-    public function remove(int $id): Response
+    public function delete(int $id)
     {
-        $request = $this->httpClient->delete(self::DATABASE_API_VERSION  . "/{$this->resource}/{$id}");
+        $options = $this->defaultOptions();
+        $response = $this->httpClient->delete($this->databaseApiUrl("/{$this->resource}/{$id}"), $options);
 
-        return $request->send();
+        return $this->parseResponseToJson($response);
     }
 
     private function parseResponseToJson(Response $response)

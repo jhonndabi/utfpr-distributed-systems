@@ -37,11 +37,9 @@ class ProviderController extends Controller
     public function store(Request $request)
     {
         $provider = new Provider;
-        $this->hydrateEntity($request->all(), $provider);
+        $provider->fromArray($request->all());
 
-        return $this->providerService->create(
-            $this->entityToJson($provider)
-        );
+        return $this->providerService->create($provider->toArray());
     }
 
     /**
@@ -64,13 +62,13 @@ class ProviderController extends Controller
      */
     public function update(Request $request, int $id)
     {
-        $provider = $this->providerService->find($id);
-        $this->hydrateEntity($request->all(), $provider);
+        $data = $this->providerService->find($id);
+        $data = array_merge($data, $request->all());
 
-        return $this->providerService->update(
-            $id,
-            $this->entityToJson($provider)
-        );
+        $provider = new Provider;
+        $provider->fromArray($data);
+
+        return $this->providerService->update($id, $provider->toArray());
     }
 
     /**
