@@ -14,4 +14,5 @@ use Illuminate\Http\Request;
 */
 
 Route::apiResource('providers', 'ProviderController');
-// Route::apiResource('orders', 'OrderController');
+Route::apiResource('orders', 'OrderController');
+Route::apiResource('services', 'ServiceController');
