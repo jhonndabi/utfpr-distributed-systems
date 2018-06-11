@@ -25,7 +25,9 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        return $this->providerService->findAll();
+        $this->providerService->findAll();
+
+        return view('providers.list');
     }
 
     /**
