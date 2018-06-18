@@ -39,6 +39,7 @@
 
                         @include('partials/_delete-form', [
                             'action' => url("/providers/{$provider['id']}"),
+                            'id' => $provider['id'],
                         ])
                     </td>
                 </tr>

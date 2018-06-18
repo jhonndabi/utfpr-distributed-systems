@@ -31,12 +31,13 @@
                     <td>{{ $service['name'] }}</td>
                     <td>{{ $service['price'] }}</td>
                     <td>
-                        <a class="btn btn-small btn-action" href="/services/{{ $service['id'] }}/edit" title="Editar">
+                        <a class="btn btn-small btn-action" href="{{ route('services.edit', ['service' => $service['id']]) }}" title="Editar">
                             <i class="fa fa-pencil" aria-hidden="true"></i>
                         </a>
 
                         @include('partials/_delete-form', [
-                            'action' => url("/services/{$service['id']}"),
+                            'action' => route('services.destroy', ['service' => $service['id']]),
+                            'id' => $service['id'],
                         ])
                     </td>
                 </tr>
