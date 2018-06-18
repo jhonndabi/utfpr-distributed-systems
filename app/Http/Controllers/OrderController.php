@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Services\OrderService;
+use App\Services\EventService;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -13,9 +14,17 @@ class OrderController extends Controller
      */
     private $orderService;
 
-    public function __construct(OrderService $orderService)
-    {
+    /**
+     * @var EventService
+     */
+    private $eventService;
+
+    public function __construct(
+        OrderService $orderService,
+        EventService $eventService
+    ) {
         $this->orderService = $orderService;
+        $this->eventService = $eventService;
     }
 
     /**
@@ -25,7 +34,19 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return $this->orderService->findAll();
+        $orders = $this->orderService->findAll();
+
+        return view('orders.list', compact('orders'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('orders.create');
     }
 
     /**
@@ -39,7 +60,9 @@ class OrderController extends Controller
         $order = new Order;
         $order->fromArray($request->all());
 
-        return $this->orderService->create($order->toArray());
+        $this->orderService->create($order->toArray());
+
+        return redirect('orders');
     }
 
     /**
@@ -50,7 +73,20 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        return $this->orderService->find($id);
+        return redirect('orders');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $order = $this->orderService->find($id);
+
+        return view('orders.edit', compact('order'));
     }
 
     /**
@@ -68,17 +104,22 @@ class OrderController extends Controller
         $order = new Order;
         $order->fromArray($data);
 
-        return $this->orderService->update($id, $order->toArray());
+        $this->orderService->update($id, $order->toArray());
+
+        return redirect('orders');
     }
 
     /**
      * Remove the specified resource from storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        return $this->orderService->delete($id);
+        $this->orderService->delete($id);
+
+        return redirect('orders');
     }
 }
