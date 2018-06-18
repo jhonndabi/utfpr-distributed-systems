@@ -13,7 +13,7 @@
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
-    @include('partials._navbar')
+    @include('partials._header')
 
     <div class="content-wrapper">
         <div class="container-fluid">

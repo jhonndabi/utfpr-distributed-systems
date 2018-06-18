@@ -1,10 +1,50 @@
 @extends('layout')
 
-@section('title', 'Resources List')
+@section('title', 'Fornecedores')
 
 @section('content')
 
-    <h1>Blank</h1>
-    <p>This is an example of a blank page that you can use as a starting point for creating new ones.</p>
+<div class="row">
+    <div class="col-xs-12">
+        <h4 class="header left">Fornecedores</h4>
+        <a class="btn btn-primary pull-right" href="/providers/create">
+            Adicionar
+        </a>
+    </div>
+</div>
 
+<div class="row">
+    <div class="col-xs-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Telefone</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($providers as $provider)
+                <tr>
+                    <th scope="row">{{ $provider['id'] }}</th>
+                    <td>{{ $provider['name'] }}</td>
+                    <td>{{ $provider['email'] }}</td>
+                    <td>{{ $provider['phone'] }}</td>
+                    <td>
+                        <a class="btn btn-small btn-action" href="/providers/{{ $provider['id'] }}/edit" title="Editar">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </a>
+
+                        @include('partials/_delete-form', [
+                            'action' => url("/providers/{$provider['id']}"),
+                        ])
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
 @endsection

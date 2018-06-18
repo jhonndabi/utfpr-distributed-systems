@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Provider;
 use App\Services\ProviderService;
 use Illuminate\Http\Request;
@@ -25,19 +26,7 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        $providers = $this->providerService->findAll();
-
-        return view('providers.list', compact('providers'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('providers.create');
+        return $this->providerService->findAll();
     }
 
     /**
@@ -51,9 +40,7 @@ class ProviderController extends Controller
         $provider = new Provider;
         $provider->fromArray($request->all());
 
-        $this->providerService->create($provider->toArray());
-
-        return redirect('providers');
+        return $this->providerService->create($provider->toArray());
     }
 
     /**
@@ -64,20 +51,7 @@ class ProviderController extends Controller
      */
     public function show(int $id)
     {
-        return redirect('providers');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $provider = $this->providerService->find($id);
-
-        return view('providers.edit', compact('provider'));
+        return $this->providerService->find($id);
     }
 
     /**
@@ -95,9 +69,7 @@ class ProviderController extends Controller
         $provider = new Provider;
         $provider->fromArray($data);
 
-        $this->providerService->update($id, $provider->toArray());
-
-        return redirect('providers');
+        return $this->providerService->update($id, $provider->toArray());
     }
 
     /**
@@ -108,8 +80,6 @@ class ProviderController extends Controller
      */
     public function destroy(int $id)
     {
-        $this->providerService->delete($id);
-
-        return redirect('providers');
+        return $this->providerService->delete($id);
     }
 }

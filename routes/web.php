@@ -12,5 +12,9 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
+
+Route::resource('providers', 'ProviderController');
+Route::resource('orders', 'OrderController');
+Route::resource('services', 'ServiceController');
