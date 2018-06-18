@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Service;
+use App\Services\ProviderService;
 use App\Services\ServiceService;
 use Illuminate\Http\Request;
 
@@ -13,9 +14,17 @@ class ServiceController extends Controller
      */
     private $serviceService;
 
-    public function __construct(ServiceService $serviceService)
-    {
+    /**
+     * @var ProviderService
+     */
+    private $providerService;
+
+    public function __construct(
+        ServiceService $serviceService,
+        ProviderService $providerService
+    ) {
         $this->serviceService = $serviceService;
+        $this->providerService = $providerService;
     }
 
     /**
@@ -25,7 +34,21 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        return $this->serviceService->findAll();
+        $services = $this->serviceService->findAll();
+
+        return view('services.list', compact('services'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $providers = $this->providerService->findAll();
+
+        return view('services.create', compact('providers'));
     }
 
     /**
@@ -39,7 +62,9 @@ class ServiceController extends Controller
         $service = new Service;
         $service->fromArray($request->all());
 
-        return $this->serviceService->create($service->toArray());
+        $this->serviceService->create($service->toArray());
+
+        return redirect('services');
     }
 
     /**
@@ -50,7 +75,21 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        return $this->serviceService->find($id);
+        return redirect('services');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $service = $this->serviceService->find($id);
+        $providers = $this->providerService->findAll();
+
+        return view('services.edit', compact('service', 'providers'));
     }
 
     /**
@@ -68,7 +107,9 @@ class ServiceController extends Controller
         $service = new Service;
         $service->fromArray($data);
 
-        return $this->serviceService->update($id, $service->toArray());
+        $this->serviceService->update($id, $service->toArray());
+
+        return redirect('services');
     }
 
     /**
@@ -79,6 +120,8 @@ class ServiceController extends Controller
      */
     public function destroy($id)
     {
-        return $this->serviceService->delete($id);
+        $this->serviceService->delete($id);
+
+        return redirect('services');
     }
 }
