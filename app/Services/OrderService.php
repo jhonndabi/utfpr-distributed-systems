@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-class OrderService extends AbstractService
+class OrderService extends AbstractDatabaseService
 {
     public function __construct()
     {

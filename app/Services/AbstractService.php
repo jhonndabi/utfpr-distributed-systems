@@ -9,9 +9,6 @@ use GuzzleHttp\Exception\ClientException;
 
 abstract class AbstractService
 {
-    const DATABASE_API_VERSION = '/api/v1';
-    const DATABASE_API_EMAIL = 'team@stark.com';
-    const DATABASE_API_TOKEN = 'dfJ2wsUU9kwSRnNk5aww';
     const NOT_FOUND = 404;
     const NOT_FOUND_MESSAGE = 'Not found.';
     const INTERNAL_SERVER_ERROR = 500;
@@ -36,13 +33,19 @@ abstract class AbstractService
     protected $resource;
 
     /**
-     * The default url to request
-     * @var string
+     * The default headers of the request
+     * @var array
      */
     protected $defaultHeaders = [
         'Content-Type' => 'application/json',
         'Accept'       => 'application/json',
     ];
+
+    /**
+     * The default query params of the request
+     * @var array
+     */
+    private $defaultQueryParams = [];
 
     public function __construct(string $resource)
     {
@@ -50,12 +53,14 @@ abstract class AbstractService
         $this->resource = $resource;
     }
 
+    abstract protected function apiUrl($segment = '');
+
     public function find($id)
     {
         $options = $this->defaultOptions();
 
         try {
-            $response = $this->httpClient->get($this->databaseApiUrl("/{$this->resource}/{$id}"), $options);
+            $response = $this->httpClient->get($this->apiUrl("/{$this->resource}/{$id}"), $options);
         } catch (ClientException $e) {
             $this->handleGuzzleException($e);
         }
@@ -68,7 +73,7 @@ abstract class AbstractService
         $options = $this->defaultOptions();
 
         try {
-            $response = $this->httpClient->get($this->databaseApiUrl("/{$this->resource}"), $options);
+            $response = $this->httpClient->get($this->apiUrl("/{$this->resource}"), $options);
         } catch (ClientException $e) {
             $this->handleGuzzleException($e);
         }
@@ -83,7 +88,7 @@ abstract class AbstractService
         $options = array_merge_recursive($options, $body);
 
         try {
-            $response = $this->httpClient->post($this->databaseApiUrl("/{$this->resource}"), $options);
+            $response = $this->httpClient->post($this->apiUrl("/{$this->resource}"), $options);
         } catch (ClientException $e) {
             $this->handleGuzzleException($e);
         }
@@ -98,7 +103,7 @@ abstract class AbstractService
         $options = array_merge_recursive($options, $body);
 
         try {
-            $response = $this->httpClient->put($this->databaseApiUrl("/{$this->resource}/{$id}"), $options);
+            $response = $this->httpClient->put($this->apiUrl("/{$this->resource}/{$id}"), $options);
         } catch (ClientException $e) {
             $this->handleGuzzleException($e);
         }
@@ -111,7 +116,7 @@ abstract class AbstractService
         $options = $this->defaultOptions();
 
         try {
-            $response = $this->httpClient->delete($this->databaseApiUrl("/{$this->resource}/{$id}"), $options);
+            $response = $this->httpClient->delete($this->apiUrl("/{$this->resource}/{$id}"), $options);
         } catch (ClientException $e) {
             $this->handleGuzzleException($e);
         }
@@ -137,18 +142,18 @@ abstract class AbstractService
         return json_decode($data, true);
     }
 
-    private function defaultOptions() {
-        return [
-            'query' => [
-                'user_email' => self::DATABASE_API_EMAIL,
-                'user_token' => self::DATABASE_API_TOKEN,
-            ],
-            'headers' => $this->defaultHeaders,
-            RequestOptions::TIMEOUT => $this->defaultTimeout
-        ];
+    protected function setDefaultQueryParams(array $defaultQueryParams)
+    {
+        $this->defaultQueryParams = $defaultQueryParams;
+        return $this;
     }
 
-    private function databaseApiUrl($segment = '') {
-        return env('API_ENDPOINT') . self::DATABASE_API_VERSION . $segment;
+    private function defaultOptions()
+    {
+        return [
+            'query'                 => $this->defaultQueryParams,
+            'headers'               => $this->defaultHeaders,
+            RequestOptions::TIMEOUT => $this->defaultTimeout
+        ];
     }
 }

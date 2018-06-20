@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-class EventService extends AbstractService
+class EventService extends AbstractEventService
 {
     public function __construct()
     {

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-class ProviderService extends AbstractService
+class ProviderService extends AbstractDatabaseService
 {
     public function __construct()
     {
