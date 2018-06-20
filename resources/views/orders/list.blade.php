@@ -31,11 +31,11 @@
                 @foreach ($orders as $order)
                 <tr>
                     <th scope="row">{{ $order['id'] }}</th>
-                    <td>{{ $order['event_id'] }}</td>
-                    <td>{{ $order['service_id'] }}</td>
+                    <td>{{ ViewHelper::getEventName($order['event_id']) }}</td>
+                    <td>{{ ViewHelper::getServiceName($order['service_id']) }}</td>
                     <td>{{ $order['quantity'] }}</td>
                     <td>{{ $order['price'] }}</td>
-                    <td>{{ $order['status'] }}</td>
+                    <td>{{ ViewHelper::getOrderStatusName($order['status']) }}</td>
                     <td>
                         <a class="btn btn-small btn-action" href="{{ route('orders.edit', ['order' => $order['id']]) }}" title="Editar">
                             <i class="fa fa-pencil" aria-hidden="true"></i>
