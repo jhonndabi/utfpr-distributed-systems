@@ -3,7 +3,7 @@
 @section ('content')
     @include('services/_form', [
         'title' => 'Editar Serviço',
-        'action' => url("/services/{$service['id']}"),
+        'action' => route('services.update', ['service' => $service['id']]),
         'method' => 'PUT',
     ])
 @endsection

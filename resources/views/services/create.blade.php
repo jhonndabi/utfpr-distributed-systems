@@ -3,6 +3,6 @@
 @section ('content')
     @include('services/_form', [
         'title' => 'Adicionar Serviço',
-        'action' => url('/services'),
+        'action' => route('services.store'),
     ])
 @endsection

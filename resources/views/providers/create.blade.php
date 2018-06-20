@@ -3,6 +3,6 @@
 @section ('content')
     @include('providers/_form', [
         'title' => 'Adicionar Fornecedor',
-        'action' => url('/providers'),
+        'action' => route('providers.store'),
     ])
 @endsection

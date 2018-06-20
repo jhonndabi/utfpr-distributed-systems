@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-xs-12">
         <h4 class="header left">Fornecedores</h4>
-        <a class="btn btn-primary pull-right" href="/providers/create">
+        <a class="btn btn-primary pull-right" href="{{ route('providers.create') }}">
             Adicionar
         </a>
     </div>
@@ -33,12 +33,12 @@
                     <td>{{ $provider['email'] }}</td>
                     <td>{{ $provider['phone'] }}</td>
                     <td>
-                        <a class="btn btn-small btn-action" href="/providers/{{ $provider['id'] }}/edit" title="Editar">
+                        <a class="btn btn-small btn-action" href="{{ route('providers.edit', ['provider' => $provider['id']]) }}" title="Editar">
                             <i class="fa fa-pencil" aria-hidden="true"></i>
                         </a>
 
                         @include('partials/_delete-form', [
-                            'action' => url("/providers/{$provider['id']}"),
+                            'action' => route('providers.destroy', ['provider' => $provider['id']]),
                             'id' => $provider['id'],
                         ])
                     </td>

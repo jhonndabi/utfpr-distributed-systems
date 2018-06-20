@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Services\OrderService;
 use App\Services\EventService;
+use App\Services\ServiceService;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -19,12 +20,19 @@ class OrderController extends Controller
      */
     private $eventService;
 
+    /**
+     * @var ServiceService
+     */
+    private $serviceService;
+
     public function __construct(
         OrderService $orderService,
-        EventService $eventService
+        EventService $eventService,
+        ServiceService $serviceService
     ) {
-        $this->orderService = $orderService;
-        $this->eventService = $eventService;
+        $this->orderService   = $orderService;
+        $this->eventService   = $eventService;
+        $this->serviceService = $serviceService;
     }
 
     /**
@@ -46,7 +54,10 @@ class OrderController extends Controller
      */
     public function create()
     {
-        return view('orders.create');
+        $events = $this->eventService->findAll();
+        $services = $this->serviceService->findAll();
+
+        return view('orders.create', compact('events', 'services'));
     }
 
     /**
@@ -84,9 +95,12 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
+        $events = $this->eventService->findAll();
+        $services = $this->serviceService->findAll();
+
         $order = $this->orderService->find($id);
 
-        return view('orders.edit', compact('order'));
+        return view('orders.edit', compact('order', 'events', 'services'));
     }
 
     /**

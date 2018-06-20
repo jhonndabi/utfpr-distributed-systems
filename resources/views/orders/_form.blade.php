@@ -5,26 +5,26 @@
     	<form class="col-md-6 col-md-offset-3" action="{{ $action }}" method="POST">
             <input type="hidden" name="_method" value="{{ $method or 'POST' }}">
             {{ csrf_field() }}
-            {{-- <div class="form-group">
+            <div class="form-group">
                 <label for="provider">Evento</label>
-                <select class="form-control" name="provider_id" id="provider">
-                    @foreach ($providers as $provider)
-                        <option value="{{ $provider['id'] }}" @if (isset($order) && $order['event_id'] === $provider['id']) {{ 'selected' }} @endif>
-                            {{ $provider['name'] }}
+                <select class="form-control" name="event_id" id="provider">
+                    @foreach ($events as $event)
+                        <option value="{{ $event['id'] }}" @if (isset($order) && $order['event_id'] === $event['id']) {{ 'selected' }} @endif>
+                            {{ $event['name'] }}
                         </option>
                     @endforeach
                 </select>
             </div>
             <div class="form-group">
                 <label for="provider">Serviço</label>
-                <select class="form-control" name="provider_id" id="provider">
-                    @foreach ($providers as $provider)
-                        <option value="{{ $provider['id'] }}" @if (isset($order) && $order['service_id'] === $provider['id']) {{ 'selected' }} @endif>
-                            {{ $provider['name'] }}
+                <select class="form-control" name="service_id" id="provider">
+                    @foreach ($services as $service)
+                        <option value="{{ $service['id'] }}" @if (isset($order) && $order['service_id'] === $service['id']) {{ 'selected' }} @endif>
+                            {{ $service['name'] }}
                         </option>
                     @endforeach
                 </select>
-            </div> --}}
+            </div>
             <div class="form-group">
              	<label for="icon_prefix">Quantidade</label>
                 <input id="icon_prefix" type="text" class="form-control" name="quantity" value="{{ $order['quantity'] or '' }}">

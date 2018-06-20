@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-xs-12">
         <h4 class="header left">Serviços</h4>
-        <a class="btn btn-primary pull-right" href="/services/create">
+        <a class="btn btn-primary pull-right" href="{{ route('services.create') }}">
             Adicionar
         </a>
     </div>

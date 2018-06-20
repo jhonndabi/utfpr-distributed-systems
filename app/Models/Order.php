@@ -22,11 +22,11 @@ class Order
     public function toArray()
     {
         return [
-            'event_id'   => $this->event_id;
-            'service_id' => $this->service_id;
-            'quantity'   => $this->quantity;
-            'price'      => $this->price;
-            'status'     => $this->status;
+            'event_id'   => $this->event_id,
+            'service_id' => $this->service_id,
+            'quantity'   => $this->quantity,
+            'price'      => $this->price,
+            'status'     => $this->status,
         ];
     }
 }

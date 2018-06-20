@@ -16,8 +16,8 @@ class Event
     public function toArray()
     {
         return [
-            'id'   => $this->id;
-            'name' => $this->name;
+            'id'   => $this->id,
+            'name' => $this->name,
         ];
     }
 }

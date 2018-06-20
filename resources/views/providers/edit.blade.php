@@ -3,7 +3,7 @@
 @section ('content')
     @include('providers/_form', [
         'title' => 'Editar Fornecedor',
-        'action' => url("/providers/{$provider['id']}"),
+        'action' => route('providers.update', ['provider' => $provider['id']]),
         'method' => 'PUT',
     ])
 @endsection
